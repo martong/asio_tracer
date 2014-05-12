@@ -1,0 +1,5 @@
+aim is used to change asio 1.55 for supporting coroutine id.
+And a coro specific storage is also implemented.
+
+logging is providing the spawn and post wrappers and the raii/macro for a scoped coro specific log string.
+
