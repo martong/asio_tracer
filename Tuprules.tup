@@ -1,0 +1,10 @@
+ifeq ($(PROJECT_ROOT),)
+
+	PROJECT_ROOT = $(TUP_CWD)
+	include ./ToolChain.tup
+	.gitignore
+
+endif
+
+INCL_DIRS += -I $(TUP_CWD)/include
+

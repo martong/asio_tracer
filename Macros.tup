@@ -1,0 +1,22 @@
+ifdef USE_CLANG
+	COMPILERNAME=clang++
+else
+	COMPILERNAME=g++
+endif
+
+# cxx
+!cxx = |> ^ compile/$(COMPILERNAME) %o^ \
+		$(CXX) $(CXXFLAGS) $(INCL_DIRS) -c %f -o %o |> %B.o
+
+# linker
+ifdef USE_TCMALLOC
+	!linker = |> ^ link/$(COMPILERNAME)%o^ \
+			$(LD) %f $(LDPARAMS) $(tcmalloc_lib_statement) -o %o |>
+else
+	!linker = |> ^ link/$(COMPILERNAME) %o^ $(LD) %f $(LDPARAMS) -o %o |>
+endif
+
+!ar = |> ^ ar %o^ ar crs %o %f |>
+
+!unitTest =  |> ^ unitTest^ $(libstdcxx_statement) $(TUP_CWD)/unitTest && \
+		touch unitTestOutput |> unitTestOutput

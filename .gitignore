@@ -1,0 +1,8 @@
+.*.swp
+.*.swo
+*.pyc
+.nfs*
+.tup
+.ycm_extra_conf.pyc
+build-*
+

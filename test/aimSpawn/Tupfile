@@ -1,0 +1,9 @@
+include_rules
+BOOST_LIBS += $(boost_lib_dir)/libboost_unit_test_framework.a
+INCL_DIRS += $(gmock_incl_statement)
+LDPARAMS += $(GMOCK_LIB) $(BOOST_LIBS) $(STDCXX_LIB)\
+ -lpthread -lrt -lm $(PLATFORM_LIBS)
+include $(PROJECT_ROOT)/Macros.tup
+: foreach *.cpp |> !cxx |>
+: *.o ../../lib/asio_tracer.a |> !linker |> unitTest
+: unitTest |> !unitTest |>

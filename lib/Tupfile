@@ -1,0 +1,6 @@
+include_rules
+include $(PROJECT_ROOT)/Macros.tup
+src1 = $(TUP_CWD)/../src/aim/asio
+src2 = $(TUP_CWD)/../src/logging
+: $(src1)/*.o $(src2)/*.o |> !ar |> asio_tracer.a
+

@@ -1,0 +1,52 @@
+ifdef USE_CLANG
+	clang_dir = /proj/cudbdm/tools/external/clang-3.4/SLED11
+	CXX = $(clang_dir)/bin/clang++ -isystem /proj/cudbdm/tools/external/libcpp/include/c++/v1 -stdlib=libc++
+	ifdef CLANG_ANALYZER
+		CXX += --analyze
+	endif
+	STDCXX_LIB = /proj/cudbdm/tools/external/libcpp/lib/libc++.a /proj/cudbdm/tools/external/libcxxabi/lib/libc++abi.a
+	LD = $(clang_dir)/bin/clang++
+	boost_dir = /proj/cudbdm/tools/external/boost/inst_1_55_0_libcxx
+	LDPARAMS += -nodefaultlibs
+	PLATFORM_LIBS = -lc -lgcc_s -lgcc -ldl
+
+else
+	export GCC_DIR
+	export LINKER
+
+	gcc_dir = $GCC_DIR
+	gcc_lib_dir = $(gcc_dir)/lib64
+	gcc_lib_statement = -L $(gcc_lib_dir)
+
+	CXX = $(gcc_dir)/bin/g++
+	LD = $LINKER
+	STDCXX_LIB = $(gcc_lib_dir)/libstdc++.a
+	boost_dir = /proj/cudbdm/tools/external/boost/inst_1_54_0_cxx11
+endif
+
+tcmalloc_dir = /proj/cudbdm/tools/external/gperftools-2.1/SLED11
+tcmalloc_incl_dir = $(tcmalloc_dir)/include
+tcmalloc_incl_statement = -isystem $(tcmalloc_incl_dir)
+tcmalloc_lib_dir = $(tcmalloc_dir)/lib
+# WARNING! Do not link statically against tcmalloc!
+tcmalloc_lib_statement = -L $(tcmalloc_lib_dir) -ltcmalloc
+
+boost_incl_dir = $(boost_dir)/include
+boost_incl_statement = -isystem $(boost_incl_dir)
+boost_lib_dir = $(boost_dir)/lib
+boost_lib_statement = -L $(boost_lib_dir)
+
+INCL_DIRS += $(boost_incl_statement)
+LDPARAMS += $(boost_lib_statement)
+
+CXXFLAGS += -std=c++1y -Wall -Wextra @(CXXFLAGS)
+
+BOOST_LIBS += \
+	$(boost_lib_dir)/libboost_log_setup.a \
+	$(boost_lib_dir)/libboost_log.a \
+	$(boost_lib_dir)/libboost_system.a \
+	$(boost_lib_dir)/libboost_coroutine.a \
+	$(boost_lib_dir)/libboost_context.a \
+	$(boost_lib_dir)/libboost_thread.a
+
+
